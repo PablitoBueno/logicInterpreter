@@ -147,18 +147,3 @@ equiv(F1,F2) :-
     rows(Vars, Rows),
     forall(member(Env, Rows),
            (evaluate(F1,Env,V1), evaluate(F2,Env,V2), V1==V2)).
-
-% ---- DEMO / TESTS (SIMPLIFIED OUTPUT) ----
-
-demo :-
-    format('~n=== DEMO ===~n'),
-    F1 = and(p,q),
-    detail(F1), show(F1),
-    F2 = and(neg(neg(p)), true),
-    detail(F2), simp_print(F2),
-    F3 = and(p),
-    ( is_valid(F3) -> format('~p valid~n',[F3]) ; format('~p invalid~n',[F3]) ),
-    F4a = and(p,true), F4b = p,
-    ( equiv(F4a,F4b) -> format('~p ≡ ~p~n',[F4a,F4b]) ; format('~p not ≡ ~p~n',[F4a,F4b]) ),
-    F5 = or(and(p,q), neg(r)),
-    detail(F5).
