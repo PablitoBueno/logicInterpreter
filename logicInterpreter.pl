@@ -162,26 +162,3 @@ demo :-
     ( equiv(F4a,F4b) -> format('~p ≡ ~p~n',[F4a,F4b]) ; format('~p not ≡ ~p~n',[F4a,F4b]) ),
     F5 = or(and(p,q), neg(r)),
     detail(F5).
-
-tests :-
-    format('~n=== TESTS ===~n'),
-    format('Valid: '),
-    forall(member(F,[p,and(p,q),or(neg(p),q),impl(p,q),iff(p,q),neg(neg(p))]),
-           ( (is_valid(F) -> format('✓') ; format('✗')) )), nl,
-    format('Invalid: '),
-    forall(member(F,[and(p),or(p,q,r),badop(p,q),123]),
-           ( (\+ is_valid(F) -> format('✓') ; format('✗')) )), nl,
-    format('Ops/Depth: ~w ~w~n', [and(p,q), or(neg(p),q)]),
-    format('Simplify: '),
-    forall(member(F,[and(p,true), or(p,false), neg(neg(p)), and(or(p,q),neg(or(p,q)))]),
-           ( simp(F,S), format('~p->~p ', [F,S]) )), nl,
-    format('Equiv: '),
-    forall(member((F1,F2,Exp),[(p,p,true),(p,q,false),(and(p,true),p,true),(or(p,false),p,true),(neg(neg(p)),p,true)]),
-           ( (equiv(F1,F2) -> R=true ; R=false),
-             (R=Exp -> format('✓') ; format('✗')) )), nl,
-    format('Classify: '),
-    forall(member((F,Exp),[(or(p,neg(p)),tautology),(and(p,neg(p)),contradiction),(and(p,q),contingency)]),
-           ( classify(F,C,_), (C=Exp -> format('✓') ; format('✗')) )), nl.
-
-help :-
-    format('~nCommands: demo, tests, is_valid(F), detail(F), show(F), simp(F,S), classify(F,C,T), equiv(F1,F2)~n').
